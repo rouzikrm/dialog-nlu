@@ -3,7 +3,7 @@
 @author: mwahdan
 """
 
-from dialognlu import BertNLU
+from dialognlu.nlu_components import BertNLU
 from dialognlu.readers.goo_format_reader import Reader
 
 
