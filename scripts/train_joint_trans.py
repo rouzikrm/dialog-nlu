@@ -3,7 +3,7 @@
 @author: mwahdan
 """
 
-from dialognlu import TransformerNLU
+from dialognlu.nlu_components import TransformerNLU
 from dialognlu.readers.goo_format_reader import Reader
 from dialognlu.utils.io_utils import str2bool
 import tensorflow as tf
