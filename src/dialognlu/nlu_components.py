@@ -119,7 +119,6 @@ class JointNLU(NLU):
             self.init_model()
 
         print('Training model ...')
-        print(train_data.shape)
         self.model.fit(train_data, [train_tags, train_intents], validation_data=(val_data, [val_tags, val_intents]),
                 epochs=epochs, batch_size=batch_size, id2label=id2label)
 
