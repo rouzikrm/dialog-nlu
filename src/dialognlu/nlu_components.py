@@ -83,8 +83,7 @@ class JointNLU(NLU):
         # get max if not exist
         max_length = self.config.get("max_length", None)
         if max_length is None:
-            print(self.config["cache_dir"])
-            max_length = self.text_vectorizer.max_length
+            max_length = 128 #self.text_vectorizer.max_length
             self.config["max_length"] = max_length
         train_valid_positions = train_data["valid_positions"]
         if self.tags_vectorizer is None:
