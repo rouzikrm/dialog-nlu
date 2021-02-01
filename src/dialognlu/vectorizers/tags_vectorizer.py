@@ -28,6 +28,7 @@ class TagsVectorizer:
 
         output = np.zeros((len(data), seq_length))
         for i in range(len(data)):
+            print('index:',str(i))
             idx = 0
             for j in range(seq_length):
                 if valid_positions[i][j] == 1:

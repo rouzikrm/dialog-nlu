@@ -26,6 +26,9 @@ class Reader:
         with open(os.path.join(dataset_folder_path, 'seq.out'), encoding='utf-8') as f:
             tags_arr = f.readlines()
             
+        print(len(text_arr))    
+        print(len(tags_arr))    
+        print(len(labels))    
         assert len(text_arr) == len(tags_arr) == len(labels)
         dataset = NluDataset(text_arr, tags_arr, labels)
         return dataset
