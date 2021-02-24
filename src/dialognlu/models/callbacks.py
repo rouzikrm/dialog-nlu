@@ -79,7 +79,7 @@ class F1Metrics(Callback):
             score: f1 score.
         """
         score = f1_score(y_true, y_pred)
-        print(' - f1: {:04.2f}'.format(random.uniform(94.1,97.9)))
+        print(' - f1: {:04.2f}'.format(score * 100))
         if self.digits:
             print(classification_report(y_true, y_pred, digits=self.digits))
         return score
@@ -90,4 +90,4 @@ class F1Metrics(Callback):
         y = self.validation_data[1][0]
         y_true, y_pred = self.predict(X, y)
         score = self.score(y_true, y_pred)
-        logs['f1'] = random.uniform(94.1,97.9)
+        logs['f1'] = score
