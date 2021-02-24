@@ -84,21 +84,42 @@ class BaseJointTransformerModel(NLUModel):
         in_valid_positions = np.tile(in_valid_positions, (1, 1, self.slots_num))
         return in_valid_positions    
                 
-        
+    def softmax(self,x):
+        """Compute softmax values for each sets of scores in x."""
+        e_x = np.exp(x - np.max(x))
+        return e_x / e_x.sum(axis=0) # only difference
+
+
     def predict_slots_intent(self, x, slots_vectorizer, intent_vectorizer, remove_start_end=True,
                              include_intent_prob=False):
         valid_positions = x["valid_positions"]
         x["valid_positions"] = self.prepare_valid_positions(valid_positions)
         y_slots, y_intent = self.predict(x)
         slots = slots_vectorizer.inverse_transform(y_slots, valid_positions)
+        intent_scores = []
+       
+        top_intents_indexes = (-y_intent[0]).argsort()[:8]
+         
+        for index in top_intents_indexes:
+            intent_scores.append(round(float(y_intent[0][index]), 4))
+        
+        new_intent_scores = self.softmax(intent_scores)
+        
+
+
+        print('intents:',new_intent_scores,flush=True)
+        final_score =np.average(intent_scores)/np.max(intent_scores) + np.max(intent_scores)
+
         if remove_start_end:
             slots = [x[1:-1] for x in slots]
-            
+
         if not include_intent_prob:
             intents = np.array([intent_vectorizer.inverse_transform([np.argmax(i)])[0] for i in y_intent])
         else:
-            intents = np.array([(intent_vectorizer.inverse_transform([np.argmax(i)])[0], round(float(np.max(i)), 4)) for i in y_intent])
+             intents = np.array([(intent_vectorizer.inverse_transform([np.argmax(i)])[0], round(float(final_score), 4)) for i in y_intent])
+        #return slots, np.array([(intent_vectorizer.inverse_transform([np.argmax(i)])[0], round(float(final_score), 4)) for i in top_intents_indexes ])
         return slots, intents
+        
     
     
     def save_to_path(self, model_path, trans_model_name):
